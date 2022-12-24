@@ -47,9 +47,8 @@ describe('App', () => {
     app.start();
 
     expect(app).toBeInstanceOf(Application);
-    expect(onMock).toHaveBeenCalledTimes(1);
-    expect(onNetMock).toHaveBeenCalledTimes(2);
-    expect(remoteExportMock).toHaveBeenCalledTimes(2);
+    expect(onNetMock).toHaveBeenCalledTimes(4);
+    expect(onMock).toHaveBeenCalledTimes(2);
     expect(localExportMock).toHaveBeenCalledTimes(1);
 
     onMock.mockReset();
@@ -89,8 +88,8 @@ describe('App', () => {
 
     expect(binder).toBeDefined();
     expect(binder.bind).toHaveBeenCalledTimes(1);
-    expect(onMock).toHaveBeenCalledTimes(0);
-    expect(onNetMock).toHaveBeenCalledTimes(1);
+    expect(onMock).toHaveBeenCalledTimes(2);
+    expect(onNetMock).toHaveBeenCalledTimes(5);
 
     onMock.mockReset();
     onNetMock.mockReset();
@@ -111,7 +110,10 @@ describe('App', () => {
     const app = builder.build();
     app.start();
 
-    expect(onMock).toHaveBeenCalledTimes(1);
-    expect(onNetMock).toHaveBeenCalledTimes(0);
+    expect(onMock).toHaveBeenCalledTimes(2);
+    expect(onNetMock).toHaveBeenCalledTimes(2);
+
+    onNetMock.mockReset();
+    onMock.mockReset();
   });
 });

@@ -1,4 +1,4 @@
-import type { IBinder } from '../../src';
+import type { IBinder, IRpcProvider } from '../../src';
 import {
   ApplicationBuilder,
   ChatCommandBinder,
@@ -11,13 +11,12 @@ import {
   ExportBinding,
   ScriptEmitter,
 } from '../../src';
-import { BINDER_TAG, SCRIPT_EMITTER_TAG } from '../../src/const';
+import { BINDER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../../src/const';
 
 describe('Decorators', () => {
   const on = jest.spyOn(global, 'on' as never);
   const onNet = jest.spyOn(global, 'onNet' as never);
   const exports = jest.spyOn(global, 'exports' as never);
-  const remoteExport = jest.spyOn(global, 'remoteExports' as never);
 
   it('should register local events', () => {
     class Controller {
@@ -34,7 +33,7 @@ describe('Decorators', () => {
 
     new ApplicationBuilder().addControllers(Controller).build().start();
 
-    expect(on).toHaveBeenCalledTimes(2);
+    expect(on).toHaveBeenCalledTimes(3);
   });
 
   it('should register net events', () => {
@@ -52,7 +51,9 @@ describe('Decorators', () => {
 
     new ApplicationBuilder().addControllers(Controller).build().start();
 
-    expect(onNet).toHaveBeenCalledTimes(2);
+    expect(onNet).toHaveBeenCalledTimes(6);
+
+    onNet.mockReset();
   });
 
   it('should register script events', () => {
@@ -96,9 +97,16 @@ describe('Decorators', () => {
     new ApplicationBuilder().addControllers(Controller).build().start();
 
     expect(exports).toHaveBeenCalledTimes(2);
+
+    exports.mockReset();
   });
 
   it('should register remote export', () => {
+    class RpcProvider implements IRpcProvider {
+      public on = jest.fn();
+      public emit = jest.fn();
+      public off = jest.fn();
+    }
     class Controller {
       @Export('test', ExportBinding.REMOTE)
       private testEvent1(): void {
@@ -111,9 +119,10 @@ describe('Decorators', () => {
       }
     }
 
-    new ApplicationBuilder().addControllers(Controller).build().start();
+    const app = new ApplicationBuilder().setRpcProvider(RpcProvider).addControllers(Controller).build().start();
+    const provider = app.get<RpcProvider>(RPC_PROVIDER_TAG);
 
-    expect(remoteExport).toHaveBeenCalledTimes(2);
+    expect(provider.on).toHaveBeenCalledTimes(2);
   });
 
   it('should register commands', () => {

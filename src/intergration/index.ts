@@ -1,12 +1,15 @@
 import EventEmitter2 from 'eventemitter2';
 import { decorate, inject, injectable, named } from 'inversify';
 
-import { LOGGER_TAG, SCRIPT_EMITTER_TAG } from '../const';
+import { LOGGER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../const';
 
 export const Inject = inject;
 export const Injectable = injectable;
 export const InjectScriptEmitter = (): ParameterDecorator & PropertyDecorator => (target, prop) => {
   inject(SCRIPT_EMITTER_TAG)(target, prop);
+};
+export const InjectRpcProvider = (): ParameterDecorator & PropertyDecorator => (target, prop) => {
+  inject(RPC_PROVIDER_TAG)(target, prop);
 };
 
 export const InjectLogger =

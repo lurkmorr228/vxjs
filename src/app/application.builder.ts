@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import type { IBinder, ILoggerFactory, TypeOf } from '../common';
+import type { IBinder, ILoggerFactory, IRpcProvider, TypeOf } from '../common';
 import {
   ChatCommandBinder,
   ConsoleCommandBinder,
@@ -9,9 +9,10 @@ import {
   LoggerFactory,
   RemoteEventBinder,
   RemoteExportBinder,
+  RpcProvider,
   ScriptEventBinder,
 } from '../common';
-import { BINDER_TAG, CONTROLLER_TAG, LOGGER_TAG, SCRIPT_EMITTER_TAG } from '../const';
+import { BINDER_TAG, CONTROLLER_TAG, LOGGER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../const';
 import { decorateInjectable, ScriptEmitter } from '../intergration';
 import { Application } from './application';
 
@@ -27,6 +28,7 @@ export class ApplicationBuilder {
   private readonly _bindersLookup: Map<TypeOf<IBinder>, TypeOf<IBinder>> = new Map<TypeOf<IBinder>, TypeOf<IBinder>>();
   private _loggerFactory: ILoggerFactory = new LoggerFactory();
   private _emitterType: TypeOf<ScriptEmitter> = ScriptEmitter;
+  private _rpcType: TypeOf<IRpcProvider> = RpcProvider;
 
   public constructor() {
     this.addBinder(ScriptEventBinder);
@@ -87,6 +89,11 @@ export class ApplicationBuilder {
     return this;
   }
 
+  public setRpcProvider(rpc: TypeOf<IRpcProvider>): ApplicationBuilder {
+    this._rpcType = rpc;
+    return this;
+  }
+
   public addControllers(...controllers: TypeOf<unknown>[]): ApplicationBuilder {
     controllers.forEach((controller) => {
       decorateInjectable(controller);
@@ -106,6 +113,14 @@ export class ApplicationBuilder {
     } else {
       throw new Error(`Script emitter is not specified`);
     }
+
+    if (this._rpcType) {
+      decorateInjectable(this._rpcType);
+      this._container.bind(RPC_PROVIDER_TAG).to(this._rpcType).inSingletonScope();
+    } else {
+      throw new Error(`Rpc provider is not specified`);
+    }
+
     this._container.bind(LOGGER_TAG).toDynamicValue((context) => {
       return this._loggerFactory.createLogger(context.currentRequest.target.getNamedTag().value);
     });
