@@ -8,9 +8,10 @@
     "sourceMap": true,
     "types": ["@types/jest","@types/node", "reflect-metadata"],
     "sourceRoot": "src",
-    "outDir": "dist"
+    "outDir": "dist",
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tests"
   ]
 }

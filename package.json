@@ -1,10 +1,11 @@
 {
   "name": "vxjs",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "test": "yarn jest --"
+    "build": "tsc",
+    "test": "yarn jest"
   },
   "devDependencies": {
     "@fullstacksjs/eslint-config": "^8.9.0",
