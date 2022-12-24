@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "ESNext",
+    "sourceMap": true,
+    "types": ["@types/jest","@types/node", "reflect-metadata"],
+    "sourceRoot": "src",
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

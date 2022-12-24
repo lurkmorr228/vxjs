@@ -1,0 +1,44 @@
+{
+  "plugins": ["jest"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "extends": "@fullstacksjs/eslint-config",
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "padding-line-between-statements": "off",
+    "no-await-in-loop": "off",
+    "no-promise-executor-return": "off",
+    "fp/no-mutating-assign": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-dynamic-delete": "off",
+    "accessor-pairs": "off",
+    "@typescript-eslint/explicit-member-accessibility": "error",
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "fp/no-loops": "off",
+    "@typescript-eslint/no-useless-empty-export": "off",
+    "import/no-cycle": "off",
+    /* Fix these two options */
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "next": ["interface", "type"],
+        "prev": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": ["interface", "type"],
+        "next": "*"
+      }
+    ]
+  },
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  }
+}
