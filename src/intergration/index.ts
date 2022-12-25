@@ -1,6 +1,7 @@
 import EventEmitter2 from 'eventemitter2';
 import { decorate, inject, injectable, named } from 'inversify';
 
+import type { Fn, IScriptEventProvider } from '../common';
 import { LOGGER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../const';
 
 export const Inject = inject;
@@ -19,9 +20,15 @@ export const InjectLogger =
     named(context ?? target.constructor.name)(target, propertyKey, parameterIndex);
   };
 
-export class ScriptEmitter extends EventEmitter2 {
-  public constructor() {
-    super({});
+export class ScriptEmitter implements IScriptEventProvider {
+  private readonly _eventEmitter = new EventEmitter2();
+
+  public on(name: string, handler: Fn): void {
+    this._eventEmitter.on(name, handler);
+  }
+
+  public off(name: string, handler: Fn): void {
+    this._eventEmitter.off(name, handler);
   }
 }
 

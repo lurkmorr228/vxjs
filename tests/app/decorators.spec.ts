@@ -1,4 +1,4 @@
-import type { IBinder, IRpcProvider } from '../../src';
+import type { IBinder, IRpcProvider, IScriptEventProvider } from '../../src';
 import {
   ApplicationBuilder,
   ChatCommandBinder,
@@ -9,7 +9,6 @@ import {
   EventHandler,
   Export,
   ExportBinding,
-  ScriptEmitter,
 } from '../../src';
 import { BINDER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../../src/const';
 
@@ -68,11 +67,12 @@ describe('Decorators', () => {
         return null;
       }
     }
-    class Emitter extends ScriptEmitter {
-      public override on = jest.fn();
+    class Emitter implements IScriptEventProvider {
+      public on = jest.fn();
+      public off = jest.fn();
     }
     const emitter = new ApplicationBuilder()
-      .setScriptEmitter(Emitter)
+      .setScriptEventProvider(Emitter)
       .addControllers(Controller)
       .build()
       .start()

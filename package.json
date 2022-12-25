@@ -1,11 +1,16 @@
 {
-  "name": "vxjs",
-  "version": "1.0.0",
+  "name": "@vxlurk/vxjs-core",
+  "version": "1.0.1",
+  "private": false,
   "main": "dist/index.js",
+  "repository": "https://github.com/lurkmorr228/vxjs",
+  "author": "lurkmorr228",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "prepublishOnly": "yarn build",
+    "postpublish": "node scripts/version-increment.js"
   },
   "devDependencies": {
     "@fullstacksjs/eslint-config": "^8.9.0",
@@ -25,5 +30,8 @@
     "eventemitter2": "^6.4.9",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

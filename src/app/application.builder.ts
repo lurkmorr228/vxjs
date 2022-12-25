@@ -1,17 +1,8 @@
 import { Container } from 'inversify';
 
-import type { IBinder, ILoggerFactory, IRpcProvider, TypeOf } from '../common';
-import {
-  ChatCommandBinder,
-  ConsoleCommandBinder,
-  LocalEventBinder,
-  LocalExportBinder,
-  LoggerFactory,
-  RemoteEventBinder,
-  RemoteExportBinder,
-  RpcProvider,
-  ScriptEventBinder,
-} from '../common';
+import type { IBinder, ILoggerFactory, IRpcProvider, IScriptEventProvider, TypeOf } from '../common';
+import { LoggerFactory, RpcProvider } from '../common';
+import * as binders from '../common/binders';
 import { BINDER_TAG, CONTROLLER_TAG, LOGGER_TAG, RPC_PROVIDER_TAG, SCRIPT_EMITTER_TAG } from '../const';
 import { decorateInjectable, ScriptEmitter } from '../intergration';
 import { Application } from './application';
@@ -27,17 +18,13 @@ export class ApplicationBuilder {
 
   private readonly _bindersLookup: Map<TypeOf<IBinder>, TypeOf<IBinder>> = new Map<TypeOf<IBinder>, TypeOf<IBinder>>();
   private _loggerFactory: ILoggerFactory = new LoggerFactory();
-  private _emitterType: TypeOf<ScriptEmitter> = ScriptEmitter;
+  private _emitterType: TypeOf<IScriptEventProvider> = ScriptEmitter;
   private _rpcType: TypeOf<IRpcProvider> = RpcProvider;
 
   public constructor() {
-    this.addBinder(ScriptEventBinder);
-    this.addBinder(LocalEventBinder);
-    this.addBinder(RemoteEventBinder);
-    this.addBinder(RemoteExportBinder);
-    this.addBinder(LocalExportBinder);
-    this.addBinder(ConsoleCommandBinder);
-    this.addBinder(ChatCommandBinder);
+    Object.values(binders).forEach((x: TypeOf<IBinder>) => {
+      this.addBinder(x);
+    });
   }
 
   public addBinder(binder: TypeOf<IBinder>, replace: TypeOf<IBinder> = binder): ApplicationBuilder {
@@ -84,7 +71,7 @@ export class ApplicationBuilder {
     return this;
   }
 
-  public setScriptEmitter(emitter: TypeOf<ScriptEmitter>): ApplicationBuilder {
+  public setScriptEventProvider(emitter: TypeOf<IScriptEventProvider>): ApplicationBuilder {
     this._emitterType = emitter;
     return this;
   }

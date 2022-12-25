@@ -1,12 +1,13 @@
 import { EventHandler } from '../../decorators';
-import { InjectScriptEmitter, ScriptEmitter } from '../../intergration';
+import { InjectScriptEmitter } from '../../intergration';
 import { EventBinding } from '../enums';
 import { Reflector } from '../reflector';
 import type { EventMetadata, IBinder } from '../types';
+import { IScriptEventProvider } from '../types';
 
 export class ScriptEventBinder implements IBinder {
   @InjectScriptEmitter()
-  private readonly _eventEmitter: ScriptEmitter;
+  private readonly _eventEmitter: IScriptEventProvider;
 
   public bind(target: unknown): void {
     Reflector.getDecoratedMethods<unknown, EventMetadata>(target, EventHandler).forEach(({ method, decorators }) => {

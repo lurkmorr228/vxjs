@@ -5,3 +5,4 @@ export * from './local-export.binder';
 export * from './remote-event.binder';
 export * from './remote-export.binder';
 export * from './script-event.binder';
+export * from './tick.binder';
