@@ -1,6 +1,2 @@
 node_modules
-build
-public
-build.server.js
-build.client.js
-watch.client.js
+dist
