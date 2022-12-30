@@ -7,7 +7,7 @@
   "author": "lurkmorr228",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "test": "yarn jest",
     "prepublishOnly": "yarn build",
     "postpublish": "node scripts/version-increment.js"

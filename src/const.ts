@@ -1,5 +1,5 @@
-export const CONTROLLER_TAG = 'CONTROLLER';
-export const BINDER_TAG = 'BINDER';
-export const SCRIPT_EMITTER_TAG = 'SCRIPT_EMITTER';
-export const RPC_PROVIDER_TAG = 'RPC_PROVIDER';
-export const LOGGER_TAG = 'LOGGER';
+export const CONTROLLER_TAG = 'CONTROLLER' as const;
+export const BINDER_TAG = 'BINDER' as const;
+export const SCRIPT_EMITTER_TAG = 'SCRIPT_EMITTER' as const;
+export const RPC_PROVIDER_TAG = 'RPC_PROVIDER' as const;
+export const LOGGER_TAG = 'LOGGER' as const;
